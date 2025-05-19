@@ -1,6 +1,9 @@
 # ninja log v6
 692	4144	7693954544139011	extern/eigen-3.4.0/test/CMakeFiles/adjoint_1.dir/adjoint.cpp.obj	482f5a8756550fc3
 4148	4525	7693954578708388	extern/eigen-3.4.0/test/adjoint_1.exe	a0dc4faa549b815f
-758	830	7693954804368159	CMakeFiles/pybind11module.dir/src/module/module.cpp.obj	c8764f7d8505565b
-830	1072	7693954805086239	pybind11module.cp312-win_amd64.pyd	bdd10a1ca80311b4
-762	3001	7693954804408056	CMakeFiles/pybind11app.dir/src/app/app.cpp.obj	2de0aabb48c2787b
+24	560	7693962962821497	CMakeFiles/pybind11app.dir/src/app/app.cpp.obj	2de0aabb48c2787b
+24	2447	7693962676240590	CMakeFiles/pybind11module.dir/src/module/module.cpp.obj	c8764f7d8505565b
+2448	2669	7693962700475134	pybind11module.cp312-win_amd64.pyd	bdd10a1ca80311b4
+561	693	7693962968190277	pybind11app.exe	86607a006ff8265f
+19	2204	7693967015248072	CMakeFiles/testmodule.dir/src/module/module.cpp.obj	bb58fbec1869b44
+2208	2572	7693967037129612	testmodule.cp312-win_amd64.pyd	f9b6fe7e7df3a119

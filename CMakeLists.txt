@@ -9,17 +9,17 @@ set(EXTERNALS "${PROJECT_SOURCE_DIR}/extern")
 
 # pybind11
 add_subdirectory(${EXTERNALS}/pybind11)
-add_subdirectory(${EXTERNALS}/eigen-3.4.0)
-add_subdirectory(${EXTERNALS}/TINYAD)
+# add_subdirectory(${EXTERNALS}/eigen-3.4.0)
+# add_subdirectory(${EXTERNALS}/TINYAD)
 
 # module
 pybind11_add_module (
-    pybind11module 
+    testmodule 
     ${MODULE_SOURCE}/module.cpp
 )
 
 target_include_directories (
-    pybind11module 
+    testmodule 
     PRIVATE ${MODULE_SOURCE}
 )
 
