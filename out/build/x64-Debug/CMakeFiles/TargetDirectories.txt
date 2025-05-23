@@ -1,6 +1,0 @@
-E:/Dev/MakePlanarFacesPlus/out/build/x64-Debug/CMakeFiles/testmodule.dir
-E:/Dev/MakePlanarFacesPlus/out/build/x64-Debug/CMakeFiles/pybind11app.dir
-E:/Dev/MakePlanarFacesPlus/out/build/x64-Debug/CMakeFiles/edit_cache.dir
-E:/Dev/MakePlanarFacesPlus/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
-E:/Dev/MakePlanarFacesPlus/out/build/x64-Debug/extern/pybind11/CMakeFiles/edit_cache.dir
-E:/Dev/MakePlanarFacesPlus/out/build/x64-Debug/extern/pybind11/CMakeFiles/rebuild_cache.dir
