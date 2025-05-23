@@ -17,7 +17,7 @@ add_subdirectory(${EXTERNALS}/pybind11)
 # add_subdirectory(${EXTERNALS}/eigen-3.4.0)
 # add_subdirectory(${EXTERNALS}/TINYAD)
 
-message(${Eigen3_DIR})
+# message(${Eigen3_DIR})
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 # module
@@ -46,5 +46,5 @@ target_include_directories (
 target_link_libraries(
     pybind11app
     PRIVATE pybind11::embed
-   # Eigen3::Eigen
+    Eigen3::Eigen
 )

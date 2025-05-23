@@ -2,3 +2,7 @@
 	path = extern/pybind11
 	url = git@github.com:pybind/pybind11.git
 	branch = stable
+[submodule "extern/TinyAD"]
+	path = extern/TinyAD
+	url = git@github.com:patr-schm/TinyAD.git
+	branch = main
