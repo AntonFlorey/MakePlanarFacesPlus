@@ -1,9 +1,9 @@
 schema_version = "1.0.0"
 
-id = "makeplanarfacesplus"
-version = "1.1.4"
+id = "MakePlanarFacesPlus"
+version = "1.0.0"
 name = "Make Planar Faces Plus"
-tagline = "Improved Make Planar Faces Operator for Quad Meshes"
+tagline = "Powerful Make Planar Faces Operator for Quad Meshes"
 maintainer = "Anton Florey <anton.florey@googlemail.com>"
 type = "add-on"
 website = "https://github.com/AntonFlorey/MakePlanarFacesPlus"
@@ -15,4 +15,3 @@ license = [
 ]
 
 platforms = ["windows-x64"]
-# Other supported platforms: "windows-arm64", "macos-x64"

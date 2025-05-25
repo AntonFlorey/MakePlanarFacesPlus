@@ -30,9 +30,10 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         layout = self.layout
         opt_settings : MakePlanarSettings = self.opt_settings
         write_custom_split_property_row(layout, "Fix Selected Vertices", opt_settings, "fix_selected_vertices", 0.6)
+        write_custom_split_property_row(layout, "Optimization Rounds", opt_settings, "optimization_rounds", 0.6)
         write_custom_split_property_row(layout, "Max Iterations", opt_settings, "max_iters", 0.6)
         write_custom_split_property_row(layout, "Shape Preservation Weight", opt_settings, "closeness_weight", 0.6)
-        write_custom_split_property_row(layout, "Shape Preservation Decay", opt_settings, "closeness_weight_decay", 0.6)
+        # write_custom_split_property_row(layout, "Shape Preservation Decay", opt_settings, "closeness_weight_decay", 0.6)
         write_custom_split_property_row(layout, "Convergence Eps", opt_settings, "convergence_eps", 0.6)
 
     def invoke(self, context, event):
@@ -61,9 +62,12 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         
         # Apply optimization settings
         make_planar_settings = testmodule.MakePlanarSettings()
+        print("HELP MEEE")
+        print(make_planar_settings.optimization_rounds)
+        print(dir(make_planar_settings))
+        make_planar_settings.optimization_rounds = opt_settings.optimization_rounds
         make_planar_settings.max_iterations = opt_settings.max_iters
         make_planar_settings.closeness_weight = opt_settings.closeness_weight
-        make_planar_settings.closeness_weight_decay = opt_settings.closeness_weight_decay
         make_planar_settings.verbose = opt_settings.verbose
         make_planar_settings.convergence_eps = opt_settings.convergence_eps
 

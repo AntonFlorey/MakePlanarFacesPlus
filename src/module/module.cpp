@@ -1,5 +1,4 @@
 #include "module.hh"
-#include "out.hh"
 
 #include <iostream>
 #include <format>
@@ -28,7 +27,7 @@ std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const s
     for (std::vector<int> face : faces)
     {
         int verts = face.size();
-        MP_ASSERT_GEQ(verts, 3);
+        TINYAD_ASSERT_GEQ(verts, 3);
         if (verts == 3) continue;
         if (verts > 4) {
             skipped_large_faces++;
@@ -36,10 +35,10 @@ std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const s
         }
         filtered_faces.push_back(face);
     }
-    MP_INFO(std::format("Skipped {} faces that have more than 4 vertices.", skipped_large_faces));
+    TINYAD_INFO(std::format("Skipped {} faces that have more than 4 vertices.", skipped_large_faces));
 
 	// Put faces into buckets
-	std::unordered_map<int, std::vector<int>> faces_by_verts;
+	/*std::unordered_map<int, std::vector<int>> faces_by_verts;
 	for (std::vector<int> face : filtered_faces)
 	{
 		int verts = face.size();
@@ -51,7 +50,7 @@ std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const s
         {
             faces_by_verts[verts].insert(faces_by_verts[verts].end(), face.begin(), face.end());
         }
-	}
+	}*/
 	
 	// Set up a TinyAD function
 	int n = vertices.size();
@@ -82,12 +81,12 @@ std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const s
                 C_triplets.emplace_back(3 * vertex_id + 2, C_cols++, 1.0);
             }
         }
-        MP_ASSERT_EQ(C_cols, m);
+        TINYAD_ASSERT_EQ(C_cols, m);
 
         C = SparseMatrix(3 * n, m);
         C.setFromTriplets(C_triplets.cbegin(), C_triplets.cend());
-        MP_ASSERT_EQ(C.rows(), 3 * n);
-        MP_ASSERT_EQ(C.cols(), m);
+        TINYAD_ASSERT_EQ(C.rows(), 3 * n);
+        TINYAD_ASSERT_EQ(C.cols(), m);
     }
     else
     {
@@ -95,7 +94,7 @@ std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const s
     }
     
     // Add closeness term
-    double closeness_weight = settings.closeness_weight;
+    double closeness_weight = settings.initial_closeness_weight;
     func.add_elements<1>(TinyAD::range(n), [&](auto& element)->TINYAD_SCALAR_TYPE(element)
     {
         // Evaluate element using either double or TinyAD::Double
@@ -117,7 +116,7 @@ std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const s
         using T = TINYAD_SCALAR_TYPE(element);
 
         std::vector<int> current_face = filtered_faces[element.handle];
-        MP_ASSERT_EQ(current_face.size(), 4);
+        TINYAD_ASSERT_EQ(current_face.size(), 4);
         
         std::vector<Eigen::Vector3<T>> vertex_coords = {
             element.variables(current_face[0]),
@@ -135,7 +134,7 @@ std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const s
         T summed_determinants = 0.0;
         for (size_t i = 0; i < 4; i++)
         {
-            summed_determinants += sqr(TinyAD::col_mat(normalized_edges[i], normalized_edges[(i + 1) % 4], normalized_edges[(i + 2) % 4]).determinant());
+            summed_determinants += 0.25 * sqr(TinyAD::col_mat(normalized_edges[i], normalized_edges[(i + 1) % 4], normalized_edges[(i + 2) % 4]).determinant());
         }
         
         return summed_determinants / (double)n_faces;
@@ -149,24 +148,33 @@ std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const s
 
     // Optimize
     TinyAD::LinearSolver solver;
-    for (int iter = 0; iter < settings.max_iterations; iter++)
+    for (int opt_round = 0; opt_round < settings.optimization_rounds; opt_round++)
     {
-        // eval function value, gradient and hessian
-        auto [f, g, H_proj] = func.eval_with_hessian_proj(x, settings.projection_eps);
-        
-        // compute newton step direction
-        Eigen::VectorXd d = TinyAD::newton_direction_reduced_basis(g, H_proj, C, solver, settings.w_identity);
-        double newton_decrement = TinyAD::newton_decrement<double>(d, g);
-        if (settings.verbose) TINYAD_INFO("Energy | Newton decrement in iteration " << iter << ": " << f << " | " << newton_decrement);
-        if (newton_decrement < settings.convergence_eps)
-            break;
-
-        // line search for new x
-        x = TinyAD::line_search(x, d, f, g, func);
-
         // update closeness weight
-        closeness_weight *= settings.closeness_weight_decay;
+        closeness_weight = settings.initial_closeness_weight * (1.0 - (double)opt_round / (double)(settings.optimization_rounds - 1.0));
+        for (int iter = 0; iter < settings.max_iterations; iter++)
+        {
+            // eval function value, gradient and hessian
+            auto [f, g, H_proj] = func.eval_with_hessian_proj(x, settings.projection_eps);
+
+            // compute newton step direction
+            Eigen::VectorXd d = TinyAD::newton_direction_reduced_basis(g, H_proj, C, solver, settings.w_identity);
+            double newton_decrement = TinyAD::newton_decrement<double>(d, g);
+            if (settings.verbose) TINYAD_INFO("Energy | Newton decrement | Closeness Weight in iteration " << iter << ": " << f << " | " << newton_decrement << " | " << closeness_weight);
+            if (newton_decrement < settings.convergence_eps)
+                break;
+
+            // line search for new x
+            Eigen::VectorXd x_old = x;
+            x = TinyAD::line_search(x, d, f, g, func);
+            if (x == x_old)
+            {
+                if (settings.verbose) TINYAD_INFO("Line search couldn't find improvement. Stopping early.");
+                break;
+            }
+        }
     }
+    if (settings.verbose) TINYAD_INFO("Final energy: " << func.eval(x));
 
     // Extract solution
     std::vector<Vec3d> optimized_vertex_positions = std::vector<Vec3d>(n, Vec3d::Zero());
@@ -188,9 +196,9 @@ PYBIND11_MODULE(testmodule, m)
     m.def("say_hello", &say_hello, "A function that prints Hello World");
     py::class_<MakePlanarSettings>(m, "MakePlanarSettings")
         .def(py::init())
+        .def_readwrite("optimization_rounds", &MakePlanarSettings::optimization_rounds)
         .def_readwrite("max_iterations", &MakePlanarSettings::max_iterations)
-        .def_readwrite("closeness_weight", &MakePlanarSettings::closeness_weight)
-        .def_readwrite("closeness_weight_decay", &MakePlanarSettings::closeness_weight_decay)
+        .def_readwrite("closeness_weight", &MakePlanarSettings::initial_closeness_weight)
         .def_readwrite("verbose", &MakePlanarSettings::verbose)
         .def_readwrite("projection_eps", &MakePlanarSettings::projection_eps)
         .def_readwrite("w_identity", &MakePlanarSettings::w_identity)

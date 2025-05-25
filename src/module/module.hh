@@ -10,10 +10,10 @@ using Triplet = Eigen::Triplet<double>;
 
 struct MakePlanarSettings
 {
+	int optimization_rounds = 10;
 	int max_iterations = 200;
 
-	double closeness_weight = 1.0;
-	double closeness_weight_decay = 1.0;
+	double initial_closeness_weight = 1.0;
 
 	// optimization settings
 	bool verbose = true;
