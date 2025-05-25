@@ -1,0 +1,5 @@
+all = [
+    "operators",
+    "ui",
+    "properties"
+]

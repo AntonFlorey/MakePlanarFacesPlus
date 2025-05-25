@@ -1,0 +1,18 @@
+schema_version = "1.0.0"
+
+id = "makeplanarfacesplus"
+version = "1.1.4"
+name = "Make Planar Faces Plus"
+tagline = "Improved Make Planar Faces Operator for Quad Meshes"
+maintainer = "Anton Florey <anton.florey@googlemail.com>"
+type = "add-on"
+website = "https://github.com/AntonFlorey/MakePlanarFacesPlus"
+tags = ["Mesh"]
+blender_version_min = "4.4.0"
+
+license = [
+  "SPDX:GPL-3.0-or-later",
+]
+
+platforms = ["windows-x64"]
+# Other supported platforms: "windows-arm64", "macos-x64"
