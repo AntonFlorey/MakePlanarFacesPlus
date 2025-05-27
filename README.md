@@ -1,4 +1,7 @@
 # MakePlanarFacesPlus
+
+![banner](images/MakePlanarFacesPlusBanner.png)
+
 A Blender Addon to flatten mesh faces
 
 <a href="https://www.github.com/AntonFlorey/MakePlanarFacesPlus/releases"><img src="https://img.shields.io/github/v/release/AntonFlorey/MakePlanarFacesPlus" alt="Badge displaying release version." style="height:20px"/></a> <a href="https://www.github.com/AntonFlorey/MakePlanarFacesPlus/releases"><img src="https://img.shields.io/github/downloads/AntonFlorey/MakePlanarFacesPlus/total.svg" alt="Repo total downloads count." style="height:20px"/></a> <a href="https://github.com/AntonFlorey/MakePlanarFacesPlus/blob/main/LICENSE"><img src="https://img.shields.io/github/license/AntonFlorey/MakePlanarFacesPlus" alt="Badge displaying license." style="height:20px"/></a> <a href="https://github.com/AntonFlorey/MakePlanarFacesPlus"><img src="https://img.shields.io/github/stars/AntonFlorey/MakePlanarFacesPlus?style=social" alt="Badge displaying count of GitHub stars." style="height:20px"/></a>

@@ -21,6 +21,7 @@ if (!(Test-Path ($build_path))){
 
 # if it exists, delete old folder
 if (Test-Path ($lean_addon_path)) {
+    Write-Output "Removing old lean addon..."
     Remove-Item -Recurse ($lean_addon_path)
 }
 
