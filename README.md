@@ -24,7 +24,7 @@ For all windows users, download the addon [here](https://github.com/AntonFlorey/
  **Edit->Preferences->Get-Extensions**. Click on the little drop-down menu in the upper right corner and select `Install from Disk...`. Lastly, select the downloaded zip-folder. The addon should now be installed.
 
 ### Build for your system
-Since this addon relies on some code written in C++, you need to compile it first for other operating systems than windows. It took me quite a while to get this working on windows, but maybe you reading this are a bit more tech savy than I am. Here are the steps needed to built this addon for your system:
+Since this addon relies on some code written in C++, you need to compile it first for other operating systems than windows. It took me quite a while to get this working on windows, but maybe you reading this are a bit more tech savvy than I am. Here are the steps needed to built this addon for your system:
 
 1. Make sure you have a C++ compiler and Cmake installed. 
 2. You also need the python-dev package of python **version 3.11** (for Blender 4.4). In general, you have to compile for the python version that comes with your Blender installation.
