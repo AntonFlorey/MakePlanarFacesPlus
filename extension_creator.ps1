@@ -2,10 +2,10 @@
 $blender_path = "C:\Program Files\Blender Foundation\Blender 4.4\"
 
 # all paths to copy
-$base_path = "E:\Dev\MakePlanarFacesPlus\"
+$base_path = $PSScriptRoot + "\"
 $addon_path = $base_path + "addon\"
 $lean_addon_path = $base_path + "lean_addon\"
-$cppmodulepath = $base_path + "out\build\x64-Release\testmodule.cp311-win_amd64.pyd"
+$cppmodulepath = $base_path + "out\build\x64-Release-2\mpfpmodule.cp311-win_amd64.pyd"
 
 # filenames
 $manifest = "blender_manifest.toml"

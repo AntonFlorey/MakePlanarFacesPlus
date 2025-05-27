@@ -5,7 +5,7 @@ from mathutils import Vector
 from bpy.props import PointerProperty
 
 from .properties import MakePlanarSettings
-from .cpplibs import testmodule
+from .cpplibs import mpfpmodule
 
 def _active_object_is_edit_mesh(context : bpy.types.Context):
     active_object = context.active_object
@@ -19,7 +19,7 @@ def write_custom_split_property_row(layout : bpy.types.UILayout, text, data, pro
     custom_row.active = active
 
 class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
-    """ Make all quad faces of the selected mesh planar. N>4 gons are not supported at the moment. """
+    """ Make all faces of the selected mesh planar. """
     bl_label = "Make Planar Faces Plus"
     bl_idname  = "mesh.make_planar_faces_plus"
     bl_options = { "UNDO" }
@@ -33,8 +33,9 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         write_custom_split_property_row(layout, "Optimization Rounds", opt_settings, "optimization_rounds", 0.6)
         write_custom_split_property_row(layout, "Max Iterations", opt_settings, "max_iters", 0.6)
         write_custom_split_property_row(layout, "Shape Preservation Weight", opt_settings, "closeness_weight", 0.6)
-        # write_custom_split_property_row(layout, "Shape Preservation Decay", opt_settings, "closeness_weight_decay", 0.6)
+        write_custom_split_property_row(layout, "Target Shape Preservation Weight", opt_settings, "min_closeness_weight", 0.6)
         write_custom_split_property_row(layout, "Convergence Eps", opt_settings, "convergence_eps", 0.6)
+        write_custom_split_property_row(layout, "Print Optimization Info", opt_settings, "verbose", 0.6)
 
     def invoke(self, context, event):
         wm = context.window_manager
@@ -49,7 +50,6 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
 
         # Collect all mesh data
         selected_vertices = [v.index for v in active_bmesh.verts if v.select]
-        mesh_area = sum([f.calc_area() for f in active_bmesh.faces])
         vertex_index_map = {}
         inverse_vertex_index_map = {}
         compact_vertex_coords = []
@@ -61,21 +61,18 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         compact_faces = [[vertex_index_map[v.index] for v in f.verts] for f in active_bmesh.faces if len(f.verts) > 3]
         
         # Apply optimization settings
-        make_planar_settings = testmodule.MakePlanarSettings()
-        print("HELP MEEE")
-        print(make_planar_settings.optimization_rounds)
-        print(dir(make_planar_settings))
+        make_planar_settings = mpfpmodule.MakePlanarSettings()
         make_planar_settings.optimization_rounds = opt_settings.optimization_rounds
         make_planar_settings.max_iterations = opt_settings.max_iters
-        make_planar_settings.closeness_weight = opt_settings.closeness_weight
+        make_planar_settings.closeness_weight = max(opt_settings.closeness_weight, opt_settings.min_closeness_weight)
+        make_planar_settings.min_closeness_weight = opt_settings.min_closeness_weight
         make_planar_settings.verbose = opt_settings.verbose
         make_planar_settings.convergence_eps = opt_settings.convergence_eps
 
         # Optimize
-        optimized_vertex_positions = testmodule.make_planar_faces(np.array(compact_vertex_coords), 
+        optimized_vertex_positions = mpfpmodule.make_planar_faces(np.array(compact_vertex_coords), 
                                                                   compact_faces, 
                                                                   compact_selected_vertices if opt_settings.fix_selected_vertices else [],
-                                                                  mesh_area,
                                                                   make_planar_settings)
         
         # Write the result back to mesh

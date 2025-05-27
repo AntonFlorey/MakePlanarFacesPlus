@@ -1,5 +1,4 @@
 import bpy
-from .properties import MakePlanarSettings
 from .operators import MESH_OT_MakePlanarFacesPlusOperator
 
 class VIEW3D_PT_MakePlanarFacesPlusPanel(bpy.types.Panel):
@@ -12,7 +11,7 @@ class VIEW3D_PT_MakePlanarFacesPlusPanel(bpy.types.Panel):
     def draw(self, context: bpy.types.Context):
         layout = self.layout
         row = layout.row()
-        row.label(text="Hello World :)")
+        row.label(text="thanks for using me!", icon="FUND")
         row = layout.row()
         row.operator(MESH_OT_MakePlanarFacesPlusOperator.bl_idname)
 

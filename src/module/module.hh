@@ -4,9 +4,14 @@
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 
+namespace MakePlanarFacesPlus
+{
+
 using Vec3d = Eigen::Vector3d;
 using SparseMatrix = Eigen::SparseMatrix<double>;
 using Triplet = Eigen::Triplet<double>;
+
+constexpr double theodorus_constant = 1.7320508075688772;
 
 struct MakePlanarSettings
 {
@@ -14,6 +19,7 @@ struct MakePlanarSettings
 	int max_iterations = 200;
 
 	double initial_closeness_weight = 1.0;
+	double min_closeness_weight = 0.1;
 
 	// optimization settings
 	bool verbose = true;
@@ -22,6 +28,10 @@ struct MakePlanarSettings
 	double convergence_eps = 1e-6;
 };
 
-std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const std::vector<std::vector<int>>& faces, const std::vector<int>& fixed_vertices, double surface_area, const MakePlanarSettings& settings);
+double compute_bounding_box_diameter(const std::vector<Vec3d>& vertices);
+
+std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const std::vector<std::vector<int>>& faces, const std::vector<int>& fixed_vertices, const MakePlanarSettings& settings);
 
 void say_hello();
+
+}

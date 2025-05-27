@@ -203,12 +203,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# local debug images
-triangulation_crash_report.png
-adjacent_components_debug_img.png
-glueflap_debugging_img.png
-glueflap_trimming_debug_img.png
-
+# Local folders for building
 addon.zip
 lean_addon
 MakePlanarFacesPlusBuilds
+Release
