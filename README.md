@@ -16,7 +16,7 @@ With the addon enabled, select any mesh object, switch to edit mode and navigate
 ## Details
 Similar to Blender's built in `Make Planar Faces` operator, the method provided by this addon aims to make each face of a mesh planar. However, instead of updating positions locally, it solves a global optimization problem in order to make faces planar while preserving the objects shape as much as possible.
 
-You can control the strength of this shape preservation objective via the `Shape Preservation Weight` and `Target Shape Preservation Weight` parameter. The algorithm will linearly interpolate between the two while optimizing. If you struggle to get decent results, try increasing the `Shape Preservation Weight` and the number of optimization rounds.
+You can control the strength of this shape preservation objective via the `Shape Preservation Weight` and `Target Shape Preservation Weight` parameter. The algorithm will interpolate between the two while optimizing. If you struggle to get decent results, try increasing the `Shape Preservation Weight` and the number of optimization rounds.
 
 The algorithm will always try to optimize the entire mesh. By enabling the `Fix Selected Vertices` option, all selected vertices will not be affected by the operator. This may be useful when you want to preserve certain features of your mesh (In fact, this is what motivated me to develop this tool).
 

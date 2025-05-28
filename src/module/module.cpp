@@ -155,6 +155,7 @@ namespace MakePlanarFacesPlus
 
         // Optimize
         TinyAD::LinearSolver solver;
+        double decay = settings.optimization_rounds == 1 ? 1.0 : std::pow(std::max(settings.min_closeness_weight, 0.001) / settings.initial_closeness_weight, 1.0 / (settings.optimization_rounds - 1.0));
         for (int opt_round = 0; opt_round < settings.optimization_rounds; opt_round++)
         {
             // update closeness weight
@@ -164,9 +165,9 @@ namespace MakePlanarFacesPlus
             }
             else
             {
-                // Linearly interpolate between start and min closeness weight
-                double t = (double)opt_round / (double)(settings.optimization_rounds - 1.0);
-                closeness_weight = settings.initial_closeness_weight * (1.0 - t) + settings.min_closeness_weight * t;
+                // Interpolate between start and min closeness weight
+                closeness_weight = settings.initial_closeness_weight * std::pow(decay, (double)opt_round);
+                if (settings.min_closeness_weight == 0.0 && opt_round == settings.optimization_rounds - 1) closeness_weight = 0.0;
             }
             for (int iter = 0; iter < settings.max_iterations; iter++)
             {
@@ -175,9 +176,13 @@ namespace MakePlanarFacesPlus
 
                 // compute newton step direction
                 Eigen::VectorXd d = TinyAD::newton_direction_reduced_basis(g, H_proj, C, solver, settings.w_identity);
+
                 double newton_decrement = TinyAD::newton_decrement<double>(d, g);
                 if (newton_decrement < settings.convergence_eps)
+                {
+                    if (settings.verbose) TINYAD_INFO("Newton decrement below convergence eps. Stopping early.");
                     break;
+                }
 
                 // line search for new x
                 Eigen::VectorXd x_old = x;

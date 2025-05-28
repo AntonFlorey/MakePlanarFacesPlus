@@ -83,6 +83,11 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
 
         # Done
         active_bmesh.free()
+
+        # Toggle modes to update distortion analysis
+        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.mode_set(mode='EDIT')
+
         return { "FINISHED" }
 
     @classmethod

@@ -18,10 +18,11 @@ struct MakePlanarSettings
 	int optimization_rounds = 10;
 	int max_iterations = 200;
 
+	// Optimization settings
 	double initial_closeness_weight = 1.0;
 	double min_closeness_weight = 0.1;
 
-	// optimization settings
+	// Optimizer settings
 	bool verbose = true;
 	double projection_eps = 1e-9;
 	double w_identity = 1e-9;

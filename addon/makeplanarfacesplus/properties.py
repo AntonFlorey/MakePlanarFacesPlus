@@ -13,25 +13,25 @@ class MakePlanarSettings(bpy.types.PropertyGroup):
     optimization_rounds: IntProperty(
         name="Optimization Rounds",
         description="In each round, the shape preservation weight gets smaller. Last round optimizes for planarity only.",
-        default=50,
+        default=100,
         min=0
     )
     max_iters: IntProperty(
         name="Max Iterations",
         description="The maximum number of inner optimization rounds",
-        default=50,
+        default=100,
         min=0
     )
     closeness_weight: FloatProperty(
         name="Shape Preservation Weight",
         description="Controls the initial force that pulls vertices to their original position",
-        default=1,
+        default=5000,
         min=0
     )
     min_closeness_weight: FloatProperty(
         name="Target Shape Preservation Weight",
         description="Controls the final force that pulls vertices to their original position",
-        default=0.1,
+        default=0,
         min=0       
     )
     verbose: BoolProperty(
