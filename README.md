@@ -47,3 +47,6 @@ cmake --build . --config Release
 8. Zip everything again and install the addon as a python extension :)
 
 If you followed there steps successfully for an operating system not listed [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases), **please** contact me so we can make this addon available for more people.
+
+## Acknowledgements
+Special thanks to Patrick and all other contributors to TinyAD! This project would have been impossible without this awesome libraray.
