@@ -155,7 +155,23 @@ namespace MakePlanarFacesPlus
 
         // Optimize
         TinyAD::LinearSolver solver;
-        double decay = settings.optimization_rounds == 1 ? 1.0 : std::pow(std::max(settings.min_closeness_weight, 0.001) / settings.initial_closeness_weight, 1.0 / (settings.optimization_rounds - 1.0));
+        double decay = 1.0;
+        if (settings.optimization_rounds > 1)
+        {
+            if (settings.initial_closeness_weight == 0)
+            {
+                decay = 0.0;
+            }
+            else if (settings.min_closeness_weight == 0)
+            {
+                // This rule is a bit random 
+                decay = std::pow(std::min(0.1 * settings.initial_closeness_weight, 0.001) / settings.initial_closeness_weight, 1.0 / (settings.optimization_rounds - 1.0));
+            }
+            else
+            {
+                decay = std::pow(settings.min_closeness_weight / settings.initial_closeness_weight, 1.0 / (settings.optimization_rounds - 1.0));
+            }
+        }
         for (int opt_round = 0; opt_round < settings.optimization_rounds; opt_round++)
         {
             // update closeness weight
