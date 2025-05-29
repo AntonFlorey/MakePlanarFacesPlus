@@ -22,17 +22,17 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 # module (pybind11)
 pybind11_add_module (
-    mpfpmodule
+    _cpp_mpfp
     ${MODULE_SOURCE}/module.cpp
 )
 
 target_include_directories (
-    mpfpmodule 
+    _cpp_mpfp 
     PRIVATE ${MODULE_SOURCE}
 )
 
 target_link_libraries(
-    mpfpmodule
+    _cpp_mpfp
     PRIVATE Eigen3::Eigen
 )
 

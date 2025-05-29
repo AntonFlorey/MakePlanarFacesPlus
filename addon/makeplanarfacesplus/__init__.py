@@ -1,5 +1,4 @@
-all = [
+__all__ = [
     "operators",
-    "ui",
-    "properties"
+    "ui"
 ]

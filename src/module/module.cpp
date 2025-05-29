@@ -236,10 +236,9 @@ namespace MakePlanarFacesPlus
 
 }
 
-PYBIND11_MODULE(mpfpmodule, m)
+PYBIND11_MODULE(_cpp_mpfp, m)
 {
     m.doc() = "This is a module created with pybind11";
-    m.def("say_hello", &MakePlanarFacesPlus::say_hello, "A function that prints Hello World");
     py::class_<MakePlanarFacesPlus::MakePlanarSettings>(m, "MakePlanarSettings")
         .def(py::init())
         .def_readwrite("optimization_rounds", &MakePlanarFacesPlus::MakePlanarSettings::optimization_rounds)

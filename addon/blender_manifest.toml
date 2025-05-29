@@ -15,3 +15,7 @@ license = [
 ]
 
 platforms = ["windows-x64"]
+
+wheels = [
+  "./wheels/mpfp-1.0.0-cp311-cp311-win_amd64.whl",
+]

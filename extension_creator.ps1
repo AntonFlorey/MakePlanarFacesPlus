@@ -5,7 +5,7 @@ $blender_path = "C:\Program Files\Blender Foundation\Blender 4.4\"
 $base_path = $PSScriptRoot + "\"
 $addon_path = $base_path + "addon\"
 $lean_addon_path = $base_path + "lean_addon\"
-$cppmodulepath = $base_path + "out\build\x64-Release-2\mpfpmodule.cp311-win_amd64.pyd"
+#$cppmodulepath = $base_path + "out\build\x64-Release-2\mpfpmodule.cp311-win_amd64.pyd"
 
 # filenames
 $manifest = "blender_manifest.toml"
@@ -31,6 +31,8 @@ Copy-Item ($addon_path + $manifest) -Destination $lean_addon_path
 Copy-Item ($base_path + $license) -Destination $lean_addon_path
 # remove first 10 lines of init file (hack to delete the blinfo)
 Get-Content ($addon_path + $initfile) | Select-Object -Skip 11 | Set-Content ($lean_addon_path + $initfile)
+# wheels
+Copy-Item ($addon_path + "wheels\") -Recurse -Destination ($lean_addon_path + "\wheels") -Filter *.whl
 # polyzamboni python files
 Copy-Item ($addon_path + "makeplanarfacesplus\") -Recurse -Filter *.py -Destination ($lean_addon_path + "makeplanarfacesplus\")
 if (Test-Path ($lean_addon_path + "makeplanarfacesplus\__pycache__")){
@@ -38,10 +40,10 @@ if (Test-Path ($lean_addon_path + "makeplanarfacesplus\__pycache__")){
     Remove-Item ($lean_addon_path + "makeplanarfacesplus\__pycache__")
 }
 # pybind11 package
-if (!(Test-Path ($lean_addon_path + "makeplanarfacesplus\cpplibs"))){
-    New-Item -Path ($lean_addon_path + "makeplanarfacesplus\cpplibs") -ItemType Directory
-}
-Copy-Item ($cppmodulepath) -Destination ($lean_addon_path + "makeplanarfacesplus\cpplibs")
+# if (!(Test-Path ($lean_addon_path + "makeplanarfacesplus\cpplibs"))){
+#     New-Item -Path ($lean_addon_path + "makeplanarfacesplus\cpplibs") -ItemType Directory
+# }
+# Copy-Item ($cppmodulepath) -Destination ($lean_addon_path + "makeplanarfacesplus\cpplibs")
 
 # call the blender build command
 Start-Process -NoNewWindow -FilePath ($blender_path + "blender.exe") -ArgumentList "--command extension build --source-dir $lean_addon_path --output-dir $build_path --split-platforms"
