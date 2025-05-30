@@ -5,6 +5,7 @@ $blender_path = "C:\Program Files\Blender Foundation\Blender 4.4\"
 $base_path = $PSScriptRoot + "\"
 $addon_path = $base_path + "addon\"
 $lean_addon_path = $base_path + "lean_addon\"
+$mpfp_wheel_path = $base_path + ".\dist\mpfp-1.0.0-cp311-cp311-win_amd64.whl"
 #$cppmodulepath = $base_path + "out\build\x64-Release-2\mpfpmodule.cp311-win_amd64.pyd"
 
 # filenames
@@ -32,7 +33,8 @@ Copy-Item ($base_path + $license) -Destination $lean_addon_path
 # remove first 10 lines of init file (hack to delete the blinfo)
 Get-Content ($addon_path + $initfile) | Select-Object -Skip 11 | Set-Content ($lean_addon_path + $initfile)
 # wheels
-Copy-Item ($addon_path + "wheels\") -Recurse -Destination ($lean_addon_path + "\wheels") -Filter *.whl
+New-Item -Path ($lean_addon_path + "wheels\") -ItemType Directory
+Copy-Item ($mpfp_wheel_path) -Destination ($lean_addon_path + "wheels\") -Filter *.whl
 # polyzamboni python files
 Copy-Item ($addon_path + "makeplanarfacesplus\") -Recurse -Filter *.py -Destination ($lean_addon_path + "makeplanarfacesplus\")
 if (Test-Path ($lean_addon_path + "makeplanarfacesplus\__pycache__")){

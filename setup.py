@@ -52,7 +52,7 @@ with open("mpfp/README.md", "r") as f:
 
 setup(
     name='mpfp',
-    version='1.0.1',
+    version='1.0.0',
     description="A small geometry processing package for mesh planarization",
     long_description=long_description,
     long_description_content_type="text/markdown",

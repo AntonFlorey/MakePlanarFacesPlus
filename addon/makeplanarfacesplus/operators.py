@@ -2,7 +2,6 @@ import bpy
 import bmesh
 import numpy as np
 import mpfp
-import matplotlib
 from mathutils import Vector
 from bpy.props import BoolProperty
 from bpy.props import FloatProperty
@@ -45,7 +44,7 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
     closeness_weight: FloatProperty(
         name="Intial Shape Preservation Weight",
         description="Controls the initial force that pulls vertices to their original position",
-        default=5000,
+        default=10,
         min=0
     )
     min_closeness_weight: FloatProperty(

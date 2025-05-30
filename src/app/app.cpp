@@ -13,7 +13,6 @@ using ADouble = TinyAD::Double<3>;
 int main()
 {
 	using namespace MakePlanarFacesPlus;
-	say_hello();
 
 	// Simple planar faces test
 

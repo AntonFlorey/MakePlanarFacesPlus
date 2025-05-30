@@ -18,7 +18,10 @@ Similar to Blender's built in `Make Planar Faces` operator, the method provided 
 
 You can control the strength of this shape preservation objective via the `Shape Preservation Weight` and `Target Shape Preservation Weight` parameter. The algorithm will interpolate between the two while optimizing. If you struggle to get decent results, try increasing the `Shape Preservation Weight` and the number of optimization rounds.
 
-The algorithm will always try to optimize the entire mesh. By enabling the `Fix Selected Vertices` option, all selected vertices will not be affected by the operator. This may be useful when you want to preserve certain features of your mesh (In fact, this is what motivated me to develop this tool).
+The algorithm will always try to optimize the entire mesh. By enabling the `Fix Selected Vertices` option, all selected vertices will not be affected by the operator. This may be useful when you want to preserve certain features (In fact, this is what motivated me to develop this tool).
+
+## Performance
+Due to the global optimization approach, the provided operator quickly becomes slow on large meshes. Also note that some meshes are way harder to make planar than others. For tricky inputs, the optimization process can slow down a lot and is likely to get stuck in local minima. In these cases, it might be helpful to first triangulate very bad regions and run blenders *make planar faces* operator as a preprocessing step.
 
 ## Installation
 If you are working on windows, the installation should be straightforward. For all of you coming from a different os, this might be a lot more complicated.

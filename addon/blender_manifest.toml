@@ -1,7 +1,7 @@
 schema_version = "1.0.0"
 
 id = "MakePlanarFacesPlus"
-version = "1.0.0"
+version = "1.0.1"
 name = "Make Planar Faces Plus"
 tagline = "Powerful Make Planar Faces Operator"
 maintainer = "Anton Florey <anton.florey@googlemail.com>"

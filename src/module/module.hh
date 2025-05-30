@@ -11,28 +11,22 @@ using Vec3d = Eigen::Vector3d;
 using SparseMatrix = Eigen::SparseMatrix<double>;
 using Triplet = Eigen::Triplet<double>;
 
-constexpr double theodorus_constant = 1.7320508075688772;
-
 struct MakePlanarSettings
 {
-	int optimization_rounds = 250;
+	int optimization_rounds = 100;
 	int max_iterations = 100;
 
 	// Optimization settings
-	double initial_closeness_weight = 5000;
+	double initial_closeness_weight = 10.0;
 	double min_closeness_weight = 0.0;
 
 	// Optimizer settings
 	bool verbose = true;
-	double projection_eps = 1e-9;
-	double w_identity = 1e-9;
+	double projection_eps = 1e-16;
+	double w_identity = 1e-16;
 	double convergence_eps = 1e-16;
 };
 
-double compute_bounding_box_diameter(const std::vector<Vec3d>& vertices);
-
 std::vector<Vec3d> make_planar_faces(const std::vector<Vec3d>& vertices, const std::vector<std::vector<int>>& faces, const std::vector<int>& fixed_vertices, const MakePlanarSettings& settings);
-
-void say_hello();
 
 }
