@@ -24,13 +24,12 @@ The algorithm will always try to optimize the entire mesh. By enabling the `Fix 
 Due to the global optimization approach, the provided operator quickly becomes slow on large meshes. Also note that some meshes are way harder to make planar than others. For tricky inputs, the optimization process can slow down a lot and is likely to get stuck in local minima. In these cases, it might be helpful to first triangulate very bad regions and run blenders *make planar faces* operator as a preprocessing step.
 
 ## Installation
-If you are working on windows, the installation should be straightforward. For all of you coming from a different os, this might be a lot more complicated.
 ### Blender Extension
-For all windows users, download the addon [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases). After that, start Blender (version 4.4) and go to  
+Download the addon [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases). After that, start Blender (version 4.4) and go to  
  **Edit->Preferences->Get-Extensions**. Click on the little drop-down menu in the upper right corner and select `Install from Disk...`. Lastly, select the downloaded zip-folder. The addon should now be installed.
 
 ### Build for your system
-Since this addon relies on some code written in C++, you need to compile it first for other operating systems than windows. It took me quite a while to get this working on windows, but maybe you reading this are a bit more tech savvy than I am. Here are the steps needed to built this addon for your system:
+Since this addon relies on some code written in C++, you need to compile it on your system if no available release works for you. It took me quite a while to get this working on windows, but maybe you reading this are a bit more tech savvy than I am. Here are the steps needed to built this addon for your system:
 
 1. Make sure you have a C++ compiler and Cmake installed. 
 2. You also need the python-dev package of python **version 3.11** (for Blender 4.4). In general, you have to compile for the python version that comes with your Blender installation.
@@ -39,17 +38,31 @@ Since this addon relies on some code written in C++, you need to compile it firs
 5. From here, type the following commands to build the python module:
 
 ```bash
+# Current working directory must be MakePlanarFacesPlus
 mkdir Builds (or some other folder name you like)
 cd Builds
-cmake -DPYTHON_EXECUTABLE="path to your python3.11 installation" -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ```
 
-6. Locate the `mpfpmodule.cp311-your-os-specs` python extension file in your Build folder.
-7. Now download the [windows version](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases) of this addon, unzip it and replace the `mpfpmodule.cp311-win_amd64` file in the `makeplanarfacesplus/cpplibs` folder with your freshly compiled python module. 
-8. Zip everything again and install the addon as a python extension :)
+6. Now build a python wheel. For this change the `prebuild_bin_file` variable in `setup.py` to the path to the `_cpp_mpfp.cp11-your_os_specs.*` file that is located in the *Builds* folder you just created. It should look like this:
 
-If you followed there steps successfully for an operating system not listed [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases), **please** contact me so we can make this addon available for more people.
+```python
+prebuild_bin_file = pathlib.Path(__file__).parent.resolve() / "Builds/_cpp_mpfp.cp11-your_os_specs.so"
+```
+
+7. Build the python wheel with the following command:
+
+```bash
+# Make sure to use the same python version used to compile the _cpp_mpfp module
+python setup.py bdist_wheel
+```
+
+8. The easiest way to create a working addon now is to download an existing release [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases). Unzip it and add the wheel you just created (should be in a folder called *dist*) to the *wheels* folder of the addon. Then add the path of the new wheel to the wheels list in the `blender_manigest.toml` file.
+
+9. Zip everything again and install the addon as a python extension :)
+
+If you followed all steps successfully for an operating system not listed [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases), **please** contact me so we can make this addon available for more people.
 
 ## Acknowledgements
 Special thanks to Patrick and all other contributors to TinyAD! This project would have been impossible without this awesome libraray.

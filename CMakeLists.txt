@@ -1,5 +1,5 @@
 
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.22)
 project("makeplanarfacesplus")
 set(CMAKE_CXX_STANDARD 20)
 
@@ -10,6 +10,7 @@ endif (MSVC)
 set(APP_SOURCE "${PROJECT_SOURCE_DIR}/src/app")
 set(MODULE_SOURCE "${PROJECT_SOURCE_DIR}/src/module")
 set(EXTERNALS "${PROJECT_SOURCE_DIR}/extern")
+set (PYBIND11_PYTHON_VERSION "3.11")
 
 # pybind11
 add_subdirectory(${EXTERNALS}/pybind11)

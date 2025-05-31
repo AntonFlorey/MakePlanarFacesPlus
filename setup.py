@@ -41,9 +41,8 @@ class prebuilt_binary(build_ext.build_ext):
         if self.inplace:
             self.copy_extensions_to_source()
 
-prebuild_bin_file = pathlib.Path(__file__).parent.resolve() / "out/build/Release/_cpp_mpfp.cp311-win_amd64.pyd"
-
-print(prebuild_bin_file)
+#prebuild_bin_file = pathlib.Path(__file__).parent.resolve() / "out/build/Release/_cpp_mpfp.cp311-win_amd64.pyd"
+prebuild_bin_file = pathlib.Path(__file__).parent.resolve() / "LinuxBuilds/_cpp_mpfp.cpython-311-x86_64-linux-gnu.so"
 
 ext_module = PrebuiltExtension(prebuild_bin_file)
 
