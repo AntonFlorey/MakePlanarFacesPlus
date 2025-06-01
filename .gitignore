@@ -204,8 +204,5 @@ cython_debug/
 #.idea/
 
 # Local folders for building
-addon.zip
 lean_addon
 MakePlanarFacesPlusBuilds
-Release
-LinuxBuilds

@@ -34,35 +34,20 @@ Since this addon relies on some code written in C++, you need to compile it on y
 1. Make sure you have a C++ compiler and Cmake installed. 
 2. You also need the python-dev package of python **version 3.11** (for Blender 4.4). In general, you have to compile for the python version that comes with your Blender installation.
 3. Install the [Eigen3](https://eigen.tuxfamily.org/index.php?title=Main_Page) C++ library and make sure Cmake can find it.
-4. Now git clone this repository and navigate to the folder containing this README file. Make sure to also clone the submodules!
-5. From here, type the following commands to build the python module:
+4. Now git clone the [mpfp repository](https://github.com/AntonFlorey/mpfp) and navigate to the mpfp root folder. Make sure to clone with the option `--recurse-submodules` set.
 
+5. From here, type the following command to build the python module:
 ```bash
-# Current working directory must be MakePlanarFacesPlus
-mkdir Builds (or some other folder name you like)
-cd Builds
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build . --config Release
+# Make sure to use python3.11 here!
+python -m pip install build # if not installed already
+python -m build
 ```
 
-6. Now build a python wheel. For this change the `prebuild_bin_file` variable in `setup.py` to the path to the `_cpp_mpfp.cp11-your_os_specs.*` file that is located in the *Builds* folder you just created. It should look like this:
+6. The easiest way to create a working addon now is to download an existing release [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases). Unzip it and add the wheel you just created (should be in a folder called *dist*) to the *wheels* folder of the addon. Then add the path of the new wheel to the wheels list in the `blender_manigest.toml` file.
 
-```python
-prebuild_bin_file = pathlib.Path(__file__).parent.resolve() / "Builds/_cpp_mpfp.cp11-your_os_specs.so"
-```
-
-7. Build the python wheel with the following command:
-
-```bash
-# Make sure to use the same python version used to compile the _cpp_mpfp module
-python setup.py bdist_wheel
-```
-
-8. The easiest way to create a working addon now is to download an existing release [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases). Unzip it and add the wheel you just created (should be in a folder called *dist*) to the *wheels* folder of the addon. Then add the path of the new wheel to the wheels list in the `blender_manigest.toml` file.
-
-9. Zip everything again and install the addon as a python extension :)
+7. Zip everything again and install the addon as a python extension :)
 
 If you followed all steps successfully for an operating system not listed [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases), **please** contact me so we can make this addon available for more people.
 
 ## Acknowledgements
-Special thanks to Patrick and all other contributors to TinyAD! This project would have been impossible without this awesome libraray.
+Special thanks to Patrick and all other contributors to TinyAD! This project would have been impossible without this awesome library.

@@ -5,7 +5,8 @@ $blender_path = "C:\Program Files\Blender Foundation\Blender 4.4\"
 $base_path = $PSScriptRoot + "\"
 $addon_path = $base_path + "addon\"
 $lean_addon_path = $base_path + "lean_addon\"
-$mpfp_wheels_path = $base_path + "dist\"
+$parent_path = Split-Path -parent $base_path
+$mpfp_wheels_path = $parent_path + "\mpfp\dist\"
 #$cppmodulepath = $base_path + "out\build\x64-Release-2\mpfpmodule.cp311-win_amd64.pyd"
 
 # filenames
