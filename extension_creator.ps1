@@ -35,8 +35,8 @@ Copy-Item ($base_path + $license) -Destination $lean_addon_path
 Get-Content ($addon_path + $initfile) | Select-Object -Skip 11 | Set-Content ($lean_addon_path + $initfile)
 # wheels
 New-Item -Path ($lean_addon_path + "wheels\") -ItemType Directory
-Copy-Item ($mpfp_wheels_path + "*") -Recurse -Filter *.whl -Destination ($lean_addon_path + "wheels\")
-# polyzamboni python files
+Copy-Item ($mpfp_wheels_path + "*") -Recurse -Filter mpfp-1.0.1*.whl -Destination ($lean_addon_path + "wheels\")
+# python files
 Copy-Item ($addon_path + "makeplanarfacesplus\") -Recurse -Filter *.py -Destination ($lean_addon_path + "makeplanarfacesplus\")
 if (Test-Path ($lean_addon_path + "makeplanarfacesplus\__pycache__")){
     Write-Output "Removing pycache..."

@@ -1,22 +1,24 @@
 schema_version = "1.0.0"
 
 id = "MakePlanarFacesPlus"
-version = "1.0.1"
+version = "1.0.2"
 name = "Make Planar Faces Plus"
 tagline = "Powerful Make Planar Faces Operator"
 maintainer = "Anton Florey <anton.florey@googlemail.com>"
 type = "add-on"
 website = "https://github.com/AntonFlorey/MakePlanarFacesPlus"
 tags = ["Mesh"]
-blender_version_min = "4.4.0"
+blender_version_min = "4.2.0"
 
 license = [
   "SPDX:GPL-3.0-or-later",
 ]
 
-platforms = ["windows-x64", "linux-x64"]
+platforms = ["windows-x64", "linux-x64", "macos-arm64"]
+# TODO support macos-x64
 
 wheels = [
-  "./wheels/mpfp-1.0.0-cp311-cp311-win_amd64.whl",
-  "./wheels/mpfp-1.0.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+  "./wheels/mpfp-1.0.1-cp311-cp311-win_amd64.whl",
+  "./wheels/mpfp-1.0.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+  "./wheels/mpfp-1.0.1-cp311-cp311-macosx_14_0_arm64.whl"
 ]

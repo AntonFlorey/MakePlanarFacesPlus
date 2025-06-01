@@ -43,7 +43,7 @@ python -m pip install build # if not installed already
 python -m build
 ```
 
-6. The easiest way to create a working addon now is to download an existing release [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases). Unzip it and add the wheel you just created (should be in a folder called *dist*) to the *wheels* folder of the addon. Then add the path of the new wheel to the wheels list in the `blender_manigest.toml` file.
+6. The easiest way to create a working addon now is to download an existing release [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases). Unzip it and add the wheel you just created (should be in a folder called *dist*) to the *wheels* folder of the addon. Then add the path of the new wheel to the wheels list in the `blender_manigest.toml` file. Also change all os names to your platform here.
 
 7. Zip everything again and install the addon as a python extension :)
 

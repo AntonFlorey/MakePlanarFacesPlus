@@ -67,13 +67,14 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
 
     def draw(self, context):
         layout = self.layout
-        write_custom_split_property_row(layout, "Fix Selected Verts", self.properties, "fix_selected_vertices", 0.6)
-        write_custom_split_property_row(layout, "Optimization Rounds", self.properties, "optimization_rounds", 0.6)
-        write_custom_split_property_row(layout, "Max Iterations", self.properties, "max_iters", 0.6)
-        write_custom_split_property_row(layout, "Shape Preservation Weight", self.properties, "closeness_weight", 0.6)
-        write_custom_split_property_row(layout, "Target Shape Preservation Weight", self.properties, "min_closeness_weight", 0.6)
-        write_custom_split_property_row(layout, "Convergence Eps", self.properties, "convergence_eps", 0.6)
-        write_custom_split_property_row(layout, "Print Optimization Info", self.properties, "verbose", 0.6)
+        split_factor = 0.7
+        write_custom_split_property_row(layout, "Fix Selected Verts", self.properties, "fix_selected_vertices", split_factor)
+        write_custom_split_property_row(layout, "Optimization Rounds", self.properties, "optimization_rounds", split_factor)
+        write_custom_split_property_row(layout, "Max Iterations", self.properties, "max_iters", split_factor)
+        write_custom_split_property_row(layout, "Shape Preservation Weight", self.properties, "closeness_weight", split_factor)
+        write_custom_split_property_row(layout, "Target Shape Preservation Weight", self.properties, "min_closeness_weight", split_factor)
+        write_custom_split_property_row(layout, "Convergence Eps", self.properties, "convergence_eps", split_factor)
+        write_custom_split_property_row(layout, "Print Optimization Info", self.properties, "verbose", split_factor)
 
     def invoke(self, context, event):
         wm = context.window_manager
