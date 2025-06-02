@@ -6,8 +6,7 @@ $base_path = $PSScriptRoot + "\"
 $addon_path = $base_path + "addon\"
 $lean_addon_path = $base_path + "lean_addon\"
 $parent_path = Split-Path -parent $base_path
-$mpfp_wheels_path = $parent_path + "\mpfp\dist\"
-#$cppmodulepath = $base_path + "out\build\x64-Release-2\mpfpmodule.cp311-win_amd64.pyd"
+$mpfp_wheels_path = $parent_path + "\mpfp\wheelhouse\"
 
 # filenames
 $manifest = "blender_manifest.toml"
@@ -35,18 +34,22 @@ Copy-Item ($base_path + $license) -Destination $lean_addon_path
 Get-Content ($addon_path + $initfile) | Select-Object -Skip 11 | Set-Content ($lean_addon_path + $initfile)
 # wheels
 New-Item -Path ($lean_addon_path + "wheels\") -ItemType Directory
-Copy-Item ($mpfp_wheels_path + "*") -Recurse -Filter mpfp-1.0.1*.whl -Destination ($lean_addon_path + "wheels\")
+Get-ChildItem -Path ($mpfp_wheels_path + "*") -Recurse -File -Filter mpfp-1.0.2*.whl | Copy-Item -Destination ($lean_addon_path + "wheels\")
+# automatically add names to manifest
+$wheel_names = Get-ChildItem $($lean_addon_path + "wheels\") -File -Filter *.whl | ForEach-Object {
+    '  "./wheels/' + $_.Name + '",'
+}
+$wheel_list = @()
+$wheel_list += "wheels = ["
+$wheel_list += $wheel_names
+$wheel_list += "]"
+$wheel_list | Add-Content ($lean_addon_path + $manifest)
 # python files
 Copy-Item ($addon_path + "makeplanarfacesplus\") -Recurse -Filter *.py -Destination ($lean_addon_path + "makeplanarfacesplus\")
 if (Test-Path ($lean_addon_path + "makeplanarfacesplus\__pycache__")){
     Write-Output "Removing pycache..."
     Remove-Item ($lean_addon_path + "makeplanarfacesplus\__pycache__")
 }
-# pybind11 package
-# if (!(Test-Path ($lean_addon_path + "makeplanarfacesplus\cpplibs"))){
-#     New-Item -Path ($lean_addon_path + "makeplanarfacesplus\cpplibs") -ItemType Directory
-# }
-# Copy-Item ($cppmodulepath) -Destination ($lean_addon_path + "makeplanarfacesplus\cpplibs")
 
 # call the blender build command
 Start-Process -NoNewWindow -FilePath ($blender_path + "blender.exe") -ArgumentList "--command extension build --source-dir $lean_addon_path --output-dir $build_path --split-platforms"
