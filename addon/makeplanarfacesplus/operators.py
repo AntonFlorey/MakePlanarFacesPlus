@@ -32,19 +32,19 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
     optimization_rounds: IntProperty(
         name="Optimization Rounds",
         description="In each round, the shape preservation weight gets smaller. Last round optimizes for planarity only",
-        default=100,
+        default=50,
         min=0
     )
     max_iters: IntProperty(
         name="Max Iterations per Round",
         description="The maximum number of inner optimization rounds",
-        default=50,
+        default=5,
         min=0
     )
     closeness_weight: FloatProperty(
         name="Intial Shape Preservation Weight",
         description="Controls the initial force that pulls vertices to their original position",
-        default=1,
+        default=5,
         min=0
     )
     min_closeness_weight: FloatProperty(
