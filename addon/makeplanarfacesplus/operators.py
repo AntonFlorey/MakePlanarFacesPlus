@@ -71,7 +71,7 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         write_custom_split_property_row(layout, "Pin Selected Vertices", self.properties, "fix_selected_vertices", split_factor)
         write_custom_split_property_row(layout, "Optimization Rounds", self.properties, "optimization_rounds", split_factor)
         write_custom_split_property_row(layout, "Max Iterations per Round", self.properties, "max_iters", split_factor)
-        write_custom_split_property_row(layout, "Start Shape Preservation Weight", self.properties, "closeness_weight", split_factor)
+        write_custom_split_property_row(layout, "Initial Shape Preservation Weight", self.properties, "closeness_weight", split_factor)
         write_custom_split_property_row(layout, "Target Shape Preservation Weight", self.properties, "min_closeness_weight", split_factor)
         write_custom_split_property_row(layout, "Convergence Eps", self.properties, "convergence_eps", split_factor)
         write_custom_split_property_row(layout, "Print Optimization Info", self.properties, "verbose", split_factor)

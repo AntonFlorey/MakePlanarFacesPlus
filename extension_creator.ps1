@@ -34,9 +34,9 @@ Copy-Item ($base_path + $license) -Destination $lean_addon_path
 Get-Content ($addon_path + $initfile) | Select-Object -Skip 11 | Set-Content ($lean_addon_path + $initfile)
 # wheels
 New-Item -Path ($lean_addon_path + "wheels\") -ItemType Directory
-Get-ChildItem -Path ($mpfp_wheels_path + "*") -Recurse -File -Filter mpfp-1.0.2*.whl | Copy-Item -Destination ($lean_addon_path + "wheels\")
+Get-ChildItem -Path ($mpfp_wheels_path) -Recurse -File -Filter mpfp*.whl | Copy-Item -Destination ($lean_addon_path + "wheels\")
 # automatically add names to manifest
-$wheel_names = Get-ChildItem $($lean_addon_path + "wheels\") -File -Filter *.whl | ForEach-Object {
+$wheel_names = Get-ChildItem $($lean_addon_path + "wheels\") -File -Filter mpfp*.whl | ForEach-Object {
     '  "./wheels/' + $_.Name + '",'
 }
 $wheel_list = @()
