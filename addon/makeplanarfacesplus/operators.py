@@ -25,26 +25,26 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
     bl_options = { "UNDO" }
 
     fix_selected_vertices: BoolProperty(
-        name="Fix Selected Verts",
+        name="Pin Selected Vertices",
         description="When set to true, all selected vertices stay in place",
         default=True
     )
     optimization_rounds: IntProperty(
         name="Optimization Rounds",
-        description="In each round, the shape preservation weight gets smaller. Last round optimizes for planarity only.",
+        description="In each round, the shape preservation weight gets smaller. Last round optimizes for planarity only",
         default=100,
         min=0
     )
     max_iters: IntProperty(
         name="Max Iterations per Round",
         description="The maximum number of inner optimization rounds",
-        default=100,
+        default=50,
         min=0
     )
     closeness_weight: FloatProperty(
         name="Intial Shape Preservation Weight",
         description="Controls the initial force that pulls vertices to their original position",
-        default=10,
+        default=1,
         min=0
     )
     min_closeness_weight: FloatProperty(
@@ -55,12 +55,12 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
     )
     verbose: BoolProperty(
         name="Print to console",
-        description="When set to true, every optimization iteration gets printed to the console",
+        description="When set to true, every optimization round info gets printed to the console",
         default=True
     )
     convergence_eps: FloatProperty(
         name="Convergence Eps",
-        description="Optimization is stopped early when the newton decrement is smaller than this value",
+        description="Optimization is stopped early when the newton decrement or objective function improvement is smaller than this value",
         default=1e-16,
         min=0
     )
@@ -68,10 +68,10 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
     def draw(self, context):
         layout = self.layout
         split_factor = 0.7
-        write_custom_split_property_row(layout, "Fix Selected Verts", self.properties, "fix_selected_vertices", split_factor)
+        write_custom_split_property_row(layout, "Pin Selected Vertices", self.properties, "fix_selected_vertices", split_factor)
         write_custom_split_property_row(layout, "Optimization Rounds", self.properties, "optimization_rounds", split_factor)
-        write_custom_split_property_row(layout, "Max Iterations", self.properties, "max_iters", split_factor)
-        write_custom_split_property_row(layout, "Shape Preservation Weight", self.properties, "closeness_weight", split_factor)
+        write_custom_split_property_row(layout, "Max Iterations per Round", self.properties, "max_iters", split_factor)
+        write_custom_split_property_row(layout, "Start Shape Preservation Weight", self.properties, "closeness_weight", split_factor)
         write_custom_split_property_row(layout, "Target Shape Preservation Weight", self.properties, "min_closeness_weight", split_factor)
         write_custom_split_property_row(layout, "Convergence Eps", self.properties, "convergence_eps", split_factor)
         write_custom_split_property_row(layout, "Print Optimization Info", self.properties, "verbose", split_factor)
@@ -107,7 +107,7 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         make_planar_settings.verbose = self.verbose
         make_planar_settings.convergence_eps = self.convergence_eps
 
-        # Optimize
+        # Optimize  
         optimized_vertex_positions = mpfp.make_planar_faces(np.array(compact_vertex_coords), 
                                                             compact_faces, 
                                                             compact_selected_vertices if self.fix_selected_vertices else [],

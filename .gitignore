@@ -206,3 +206,4 @@ cython_debug/
 # Local folders for building
 lean_addon
 MakePlanarFacesPlusBuilds
+Benchmarks
