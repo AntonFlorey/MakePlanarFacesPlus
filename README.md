@@ -37,29 +37,6 @@ for opt_round in range("Optimization Rounds"):
     shape_weight *= decay_factor
 ```
 
-The algorithm will always try to optimize the entire mesh. By enabling the `Pin Selected Vertices` option, all selected vertices will not be affected by the operator. This may be useful when you want to preserve certain features (In fact, this is what motivated me to develop this tool).Similar to Blender's built in `Make Planar Faces` operator, the method provided by this addon aims to make each face of a mesh planar. However, instead of updating positions locally, it solves a global optimization problem in order to make faces planar while preserving the objects shape as much as possible.
-
-You can control the strength of this shape preservation objective via the `Intial Shape Preservation Weight` and `Target Shape Preservation Weight` parameter. The algorithm will interpolate between the two while optimizing. 
-
-How fast the shape preservation weight decays is controlled by the `Optimization Rounds` setting. If set to 2, the first round will use the initial weight, the second round the target weight. More rounds will add more steps inbetween these two values, leading to a more graceful descent. 
-
-The `Max Iterations per Round` setting determines how many optimization steps are performed per round (so for one weight value). A round will be stopped early if the objective funtion improvement falls below the `Convergence Eps` threshold. 
-
-Here is an overview of the optimization process:
-
-```python
-# python pseudo-code of the optimization process
-shape_weight = "Intial Shape Preservation Weight"
-for opt_round in range("Optimization Rounds"):
-    for opt_step in range("Max Iterations per Round"):
-        do_optimization_step()
-        if improvement < "Convergence Eps":
-            break
-    # the decay factor is chosen such that
-    # shape_weight = "Target Shape Preservation Weight" in the last round
-    shape_weight *= decay_factor
-```
-
 The algorithm will always try to optimize the entire mesh. By enabling the `Pin Selected Vertices` option, all selected vertices will not be affected by the operator. This may be useful when you want to preserve certain features (In fact, this is what motivated me to develop this tool).
 
 ## Performance
