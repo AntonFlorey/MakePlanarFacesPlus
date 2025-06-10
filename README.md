@@ -39,8 +39,29 @@ for opt_round in range("Optimization Rounds"):
 
 The algorithm will always try to optimize the entire mesh. By enabling the `Pin Selected Vertices` option, all selected vertices will not be affected by the operator. This may be useful when you want to preserve certain features (In fact, this is what motivated me to develop this tool).
 
-## Performance
-Due to the global optimization approach, the provided operator quickly becomes slow on large meshes. Also note that some meshes are way harder to make planar than others. For tricky inputs, the optimization process can slow down a lot and is likely to get stuck in local minima. In these cases, it might be helpful to first triangulate very bad regions and run blenders *make planar faces* operator as a preprocessing step.
+## Settings & Performance
+To gain more insight into how each parameter effects the optimization process, I conducted a few small experiments. You can use the insights gained from them to adjust the optimizer settings.
+
+### The good news
+For most low-poly models with around 100 to 1k vertices, the default settings produce good quality results in a couple of seconds. The plots below show the algorithms behaviour when tested on Blenders "Suzanne" mesh with an shape preservation weight of 5. You can already get a planar mesh (face distortion < 1e-16) after 30 optimization rounds with as little as 2 optimization steps per round. 
+
+<p float="middle">
+    <img src ="images/SuzanneLowResTimes.png" width=370>
+    <img src ="images/SuzanneLowResHeatmap.png" width=370>
+</p>
+
+<sub>The images above show results on the "Suzanne" mesh with one applied subdivision round.</sub> 
+
+### The bad news
+
+Due to the global optimization approach, the provided operator quickly becomes slow on large meshes. Also note that some meshes are way harder to make planar than others. For tricky inputs, the optimization process can slow down a lot and is likely to get stuck in local minima. One example for this is the "Suzanne" Mesh with one round of subdivision applied to it. You have to increase optimization rounds and iterations per round to get consistently good results. In some rare cases the optimizer fails (black squares). If this happens to you, just restart the process with slightly different settings. 
+
+<p float="middle">
+    <img src ="images/SuzanneHighResTimes.png" width=370>
+    <img src ="images/SuzanneHighResHeatmap.png" width=370>
+</p>
+
+<sub>The images above show results on the "Suzanne" mesh with one applied subdivision round.</sub> 
 
 ## Installation
 ### Blender Extension
