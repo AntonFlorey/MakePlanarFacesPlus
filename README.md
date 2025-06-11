@@ -72,20 +72,21 @@ Download the addon [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/rel
 Since this addon relies on some code written in C++, you need to compile it on your system if no available release works for you. It took me quite a while to get this working on windows, but maybe you reading this are a bit more tech savvy than I am. Here are the steps needed to built this addon for your system:
 
 1. Make sure you have a C++ compiler and Cmake installed. 
-2. You also need the python-dev package of python **version 3.11** (for Blender 4.4). In general, you have to compile for the python version that comes with your Blender installation.
-3. Now git clone the [mpfp repository](https://github.com/AntonFlorey/mpfp) and navigate to the mpfp root folder. Make sure to clone with the option `--recurse-submodules` set.
-4. From here, type the following command to build the python module:
+2. Install OpenMP and make sure Cmake can locate it via `find_package`.
+3. You also need the python-dev package of python **version 3.11** (for Blender 4.4). In general, you have to compile for the python version that comes with your Blender installation.
+4. Now git clone the [mpfp repository](https://github.com/AntonFlorey/mpfp) and navigate to the mpfp root folder. Make sure to clone with the option `--recurse-submodules` set.
+5. From here, type the following command to build the python module:
 ```bash
 # Make sure to use python3.11 here!
 python -m pip install build # if not installed already
 python -m build
 ```
-5. The easiest way to create a working Blender extension now is to clone this repository and add the wheel you just created (should be in a folder called *dist*) to the *addon/wheels* folder. Then add a list called `wheels` to the `blender_manigest.toml` file, containing the path to your wheel. It should look like this:
+6. The easiest way to create a working Blender extension now is to clone this repository and add the wheel you just created (should be in a folder named *dist*) to the *addon/wheels* folder. Then add a list called `wheels` to the `blender_manigest.toml` file, containing the path to your wheel. It should look like this:
 
 ```python
 wheels = ["./wheels/name-of-your-wheel.whl"]
 ```
-6. Now zip the `addon` folder. You should now be able to install it as a Blender extension.
+7. Now zip the `addon` folder. You should now be able to install it as a Blender extension.
 
 If you followed all steps successfully for an operating system not listed [here](https://github.com/AntonFlorey/MakePlanarFacesPlus/releases), **please** contact me so we can make this addon available for more people.
 
