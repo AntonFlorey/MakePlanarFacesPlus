@@ -1,5 +1,5 @@
 # path to blender executable
-$blender_path = "C:\Program Files\Blender Foundation\Blender 4.4\"
+$blender_path = "C:\Program Files\Blender Foundation\Blender 4.3\"
 
 # all paths to copy
 $base_path = $PSScriptRoot + "\"

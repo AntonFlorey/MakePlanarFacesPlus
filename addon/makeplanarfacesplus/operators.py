@@ -35,23 +35,31 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         default=50,
         min=0
     )
-    max_iters: IntProperty(
+    max_iterations_per_round: IntProperty(
         name="Max Iterations per Round",
         description="The maximum number of inner optimization rounds",
         default=5,
         min=0
     )
-    closeness_weight: FloatProperty(
+    initial_shape_preservation_weight: FloatProperty(
         name="Intial Shape Preservation Weight",
         description="Controls the initial force that pulls vertices to their original position",
         default=5,
         min=0
     )
-    min_closeness_weight: FloatProperty(
+    target_shape_preservation_weight: FloatProperty(
         name="Target Shape Preservation Weight",
         description="Controls the final force that pulls vertices to their original position",
         default=0,
         min=0       
+    )
+    edge_length_preservation_blend_factor: FloatProperty(
+        name="Edge Length Preservation Factor",
+        description="Controls how much edge lengths should be preserved",
+        default=0.5,
+        min=0,
+        max=1,
+        subtype="FACTOR"
     )
     verbose: BoolProperty(
         name="Print to console",
@@ -69,10 +77,14 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         layout = self.layout
         split_factor = 0.7
         write_custom_split_property_row(layout, "Pin Selected Vertices", self.properties, "fix_selected_vertices", split_factor)
+        write_custom_split_property_row(layout, "Edge Length Preservation Factor", self.properties, "edge_length_preservation_blend_factor", split_factor)
+        # header, subpanel = layout.panel("Advanced Settings" ,default_closed=True)
+        layout.separator()
+        layout.label(text="Advanced Settings", icon="SETTINGS")
         write_custom_split_property_row(layout, "Optimization Rounds", self.properties, "optimization_rounds", split_factor)
-        write_custom_split_property_row(layout, "Max Iterations per Round", self.properties, "max_iters", split_factor)
-        write_custom_split_property_row(layout, "Initial Shape Preservation Weight", self.properties, "closeness_weight", split_factor)
-        write_custom_split_property_row(layout, "Target Shape Preservation Weight", self.properties, "min_closeness_weight", split_factor)
+        write_custom_split_property_row(layout, "Max Iterations per Round", self.properties, "max_iterations_per_round", split_factor)
+        write_custom_split_property_row(layout, "Initial Shape Preservation Weight", self.properties, "initial_shape_preservation_weight", split_factor)
+        write_custom_split_property_row(layout, "Target Shape Preservation Weight", self.properties, "target_shape_preservation_weight", split_factor)
         write_custom_split_property_row(layout, "Convergence Eps", self.properties, "convergence_eps", split_factor)
         write_custom_split_property_row(layout, "Print Optimization Info", self.properties, "verbose", split_factor)
 
@@ -98,12 +110,13 @@ class MESH_OT_MakePlanarFacesPlusOperator(bpy.types.Operator):
         compact_selected_vertices = [vertex_index_map[v_id] for v_id in selected_vertices]
         compact_faces = [[vertex_index_map[v.index] for v in f.verts] for f in active_bmesh.faces if len(f.verts) > 3]
         
-        # Apply optimization settings
+        # Apply optimization settingsddddd
         make_planar_settings = mpfp.MakePlanarSettings()
         make_planar_settings.optimization_rounds = self.optimization_rounds
-        make_planar_settings.max_iterations = self.max_iters
-        make_planar_settings.closeness_weight = max(self.closeness_weight, self.min_closeness_weight)
-        make_planar_settings.min_closeness_weight = self.min_closeness_weight
+        make_planar_settings.max_iterations_per_round = self.max_iterations_per_round
+        make_planar_settings.initial_shape_preservation_weight = max(self.initial_shape_preservation_weight, self.target_shape_preservation_weight)
+        make_planar_settings.target_shape_preservation_weight = self.target_shape_preservation_weight
+        make_planar_settings.edge_length_preservation_blend_factor = self.edge_length_preservation_blend_factor
         make_planar_settings.verbose = self.verbose
         make_planar_settings.convergence_eps = self.convergence_eps
 

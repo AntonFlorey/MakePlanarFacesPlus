@@ -16,7 +16,9 @@ With the addon enabled, select any mesh object, switch to edit mode and navigate
 ## Details
 Similar to Blender's built in `Make Planar Faces` operator, the method provided by this addon aims to make each face of a mesh planar. However, instead of updating positions locally, it solves a global optimization problem in order to make faces planar while preserving the objects shape as much as possible.
 
-You can control the strength of this shape preservation objective via the `Intial Shape Preservation Weight` and `Target Shape Preservation Weight` parameter. The algorithm will interpolate between the two while optimizing. 
+There are two objective terms that both favor shape preservation. One penalizes the distance of all vertices to their original position and the other one penalizes changes in edge lengths. You can blend these two objectives via the `Edge Length Preservation Factor` parameter: A value of 0 will turn off the edge length objective, a value of 1 will turn off the vertex distance objective. The default value 0.5 will lead to a balance between the two.
+
+You can control the strength of this shape preservation objective via the `Intial Shape Preservation Weight` and `Target Shape Preservation Weight` parameter. The algorithm will interpolate between the two while optimizing.
 
 How fast the shape preservation weight decays is controlled by the `Optimization Rounds` setting. If set to 2, the first round will use the initial weight, the second round the target weight. More rounds will add more steps inbetween these two values, leading to a more graceful descent. 
 
@@ -43,14 +45,14 @@ The algorithm will always try to optimize the entire mesh. By enabling the `Pin 
 To gain more insight into how each parameter effects the optimization process, I conducted a few small experiments. You can use the insights gained from them to adjust the optimizer settings.
 
 ### The good news
-For most low-poly models with around 100 to 1k vertices, the default settings produce good quality results in a couple of seconds. The plots below show the algorithms behaviour when tested on Blenders "Suzanne" mesh with an shape preservation weight of 5. You can already get a planar mesh (face distortion < 1e-16) after 30 optimization rounds with as little as 2 optimization steps per round. 
+For most low-poly models with around 100 to 1k vertices, the default settings produce good quality results in a couple of seconds. The plots below show the algorithms behaviour when tested on Blenders "Suzanne" mesh with an intial shape preservation weight of 5. You can already get a planar mesh (face distortion < 1e-16) after 30 optimization rounds with as little as 2 optimization steps per round. 
 
 <p float="middle">
     <img src ="images/SuzanneLowResTimes.png" width=370>
     <img src ="images/SuzanneLowResHeatmap.png" width=370>
 </p>
 
-<sub>The images above show results on the "Suzanne" mesh with one applied subdivision round.</sub> 
+<sub>The images above show results on the "Suzanne" mesh.</sub> 
 
 ### The bad news
 
