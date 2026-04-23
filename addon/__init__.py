@@ -1,8 +1,8 @@
 bl_info = {
     "name": "MakePlanarFacesPlus",
     "author": "Anton Florey",
-    "version": (1,0,0),
-    "blender": (4,4,0),
+    "version": (1,1,0),
+    "blender": (5,1,0),
     "location": "View3D",
     "warning": "",
     "wiki_url": "",
